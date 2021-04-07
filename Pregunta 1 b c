@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr  6 20:32:10 2021
+
+@author: sebas
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+dataset = pd.read_csv('titanic.csv')
+#columna variables dependientes
+x = dataset.iloc[:, :3].values 
+#columna variable independiente
+y = dataset.iloc[:, 3].values
+
+#Realizamos latransformación de cadena a valores númericos para los calculos matemáticos
+from sklearn.preprocessing import LabelEncoder
+labelencoder_x = LabelEncoder()
+for i in range(3):
+    x[:,i] = labelencoder_x.fit_transform(x[:,i])
+
+labelencoder_y = LabelEncoder()
+y = labelencoder_y.fit_transform(y)
+
+mediaV=[]
+#"media"
+for i in range(3):
+    media = np.mean(x[:,i])
+    mediaV.append(media)
+
+
+#Desviacion standart
+desv1=[]
+for k in range(3) :
+    ds = np.std(x[:,k])
+    desv1.append(ds)
+           
+#moda con libreria
+modaV=[]
+for t in range(3):
+    from scipy import stats
+    moda = stats.mode(x[:,0])
+    modaV.append(moda)
+
+print ("media",mediaV)
+print("Desviacion standavrt",desv1)
+print ("moda",modaV)
+
+
+           
+plt.hist(y)
+plt.hist(x)
