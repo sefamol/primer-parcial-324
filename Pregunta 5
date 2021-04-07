@@ -1,0 +1,83 @@
+from kanren import run, eq, var
+x = var()
+y = var()
+z = var()
+
+
+from kanren import Relation, facts,conde ,lall,lany
+padre = Relation()
+
+facts(padre, ('Salvador','Angel'),
+('Salvador','Jesus'),
+('Salvador','Oscar'),
+('Salvador','Betty'),
+('Flora','Angel'),
+('Flora','Jesus'),
+('Flora','Oscar'),
+('Flora','Betty'),
+('Pedro','Edgar'),
+('Pedro','Rodolfo'),
+('Pedro','Nancy'),
+('Pedro','Sandra'),
+('Martha','Edgar'),
+('Martha','Rodolfo'),
+('Martha','Nancy'),
+('Martha','Sandra'),
+('Jesus','Cris'),
+('Jesus','Osqui'),
+('Daysi','Cris'),
+('Daysi','Osqui'),
+('Oscar','Olver'),
+('Oscar','Olver'),
+('Edgar','Daniela'),
+('Edgar','Andrea'),
+('Betty','Enrique'),
+('Betty','Leo'),
+('Angel','Sebas'),
+('Angel','Sara'),
+('Nancy','Sebas'),
+('Nancy','Sara')
+)
+
+print(run(4,x, padre("Salvador",x)))
+
+
+def abuelos(x, z):
+    y = var()
+    return conde((padre(x,y), padre(y,z) ))
+
+def tios(x, z):
+    y = var()
+    w = var()
+    fami=set(run(16, x, conde((padre(y,x), padre(y,w), padre(w,z)))))
+    p=list(run(8, x, padre(x, z)))
+    for i in p:
+        fami.discard(i)
+    return fami
+    
+def hermanos(x,w):
+    fami=set(run(8, x, conde((padre(y,x), padre(y,w) ))))
+    fami.discard(w)
+    return fami
+
+def hijos(x,w):
+    return (padre(x,w))
+
+def primos(x,w):
+    y = var()
+    t = var()
+    u = var()
+    e = var()
+    
+    fami=set(run(20, x, conde((padre(y,x), padre(t,w), padre(u,y),padre(u,t)))))
+    herm=hermanos(e,w)
+    for i in herm:
+        fami.discard(i)
+    fami.discard(w)
+    return fami
+
+print(run(8, x, abuelos(x, 'Martha')))
+print(tios(x, 'Edgar'))
+print(hermanos(x, 'Sara'))
+print(run(8, x, hijos('Rodolfo',x)))
+print(primos(x,'Carola'))
