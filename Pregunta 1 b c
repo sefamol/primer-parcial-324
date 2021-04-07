@@ -42,7 +42,7 @@ for k in range(3) :
 modaV=[]
 for t in range(3):
     from scipy import stats
-    moda = stats.mode(x[:,0])
+    moda = stats.mode(x[:,t])
     modaV.append(moda)
 
 print ("media",mediaV)
